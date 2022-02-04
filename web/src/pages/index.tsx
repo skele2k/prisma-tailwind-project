@@ -10,8 +10,8 @@ const HomePage: React.FC<HomePageType> = ({}) => {
       <Head>
         <title>Tody app</title>
       </Head>
-      <Navbar />
-      <div className="mx-auto">Hello World~!</div>
+      <Navbar styles="mb-6" />
+      <div className="max-w-3xl mx-auto bg-red-200">Tody app</div>
     </div>
   );
 };
