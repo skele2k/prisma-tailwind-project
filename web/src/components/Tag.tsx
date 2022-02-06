@@ -1,42 +1,25 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react";
+import React from "react";
+import { Draggable } from "react-beautiful-dnd";
 
 type TagProps = {
+  draggableId: string;
+  index: number;
   children: React.ReactNode;
 };
 
-export const Tag: React.FC<TagProps> = ({ children }) => {
-  const [pressed, setPressed] = useState(false);
-  const [positionY, setPositionY] = useState(0);
-  const [zIndex, setZIndex] = useState(1);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.style.transform = `translate(0px, ${positionY}px)`;
-    }
-  }, [positionY]);
-
-  const onMouseMove = (event: MouseEvent) => {
-    if (pressed) {
-      setPositionY(positionY + event.movementY);
-    }
-  };
-
+export const Tag: React.FC<TagProps> = ({ draggableId, index, children }) => {
   return (
-    <div
-      ref={ref}
-      className={`border-radius-1 rounded-xl border border-slate-400 bg-purple-300 px-2 py-1 z-${zIndex}`}
-      onMouseMove={onMouseMove}
-      onMouseDown={() => {
-        setPressed(true);
-        setZIndex(10);
-      }}
-      onMouseUp={() => {
-        setPressed(false);
-        setZIndex(1);
-      }}
-    >
-      {children}
-    </div>
+    <Draggable draggableId={draggableId} index={index}>
+      {(provided) => (
+        <div
+          className={`border-radius-1 z-1 rounded-xl border border-slate-400 bg-purple-300 px-2 py-1`}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          {children}
+        </div>
+      )}
+    </Draggable>
   );
 };
